@@ -76,6 +76,9 @@ def get_photo_id(url):
 def logged_in(browser):
     return 'login' not in browser.current_url
 
+def is_two_step(browser):
+    return 'two_step_verification' in browser.current_url
+
 def checkpoint_passed(driver):
     return 'checkpoint' not in driver.current_url
 
@@ -109,6 +112,9 @@ def go():
         password.send_keys(args.password)
         submit.click()
         time.sleep(3) # wait this many seconds
+        if is_two_step(browser):
+            input('🚨 There is a captcha or two-auth, please complete and then press enter to continue. 🚨')
+            time.sleep(3)
         browser.get(browser.current_url)
 
     if not logged_in(browser):
